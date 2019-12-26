@@ -1,0 +1,51 @@
+{% extends "tempdashboard.html" %}
+{% block title %}Моўны трэнажор {% endblock title %}
+{% block content %}
+{% load static %}
+
+<style>
+.form-control[type=text]:valid {
+ color: black
+}
+.form-control[type=text]:invalid {
+ color: red
+}
+</style>
+<header class="masthead" style="background-image: url({% static 'dashboard/img/dict.jpg' %}")>
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Слоўнік</h1>
+            <span class="subheading">Паспрабуем знайсці тлумачэнне любога слова</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+<div class="container">
+ 
+<form method="post">
+	{% csrf_token %}
+ <div class="form-row">
+ <div class="col">
+ <input type="text" class="form-control"  placeholder="Слова для тлумачэнне" name = "word">
+ </div>
+ <div class="col">
+ <input type="submit" class="btn btn-primary" value="Знайсці">
+ </div>
+ </div>
+</form>
+</div>
+<div class="row">
+          <div class="col-md-7 offset-md-2">
+            <h2>{{ word|first }}</h2>
+            {% if word|length > 1 %}
+                {% for explanation in word|slice:"1:" %}
+                    <p> {{explanation}} </p>
+                {% endfor %}
+            {% endif %}
+          </div>
+</div>
+{% endblock content %}

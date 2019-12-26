@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="be">
+
+<head>
+
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+{% load static %} 
+  <title>{% block title %} {% endblock title %}</title>
+
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'login/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet"> 
+  <!-- Custom fonts for this template -->
+  <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
+  <!-- Custom styles for this template -->
+  <link href=" {% static 'login/css/one-page-wonder.min.css' %}" rel="stylesheet">
+  <style>
+   @font-face 
+   {
+    font-family: IstokWebB; /* Гарнитура шрифта */
+    src: url(/static/login/fonts/IstokWebB.ttf); /* Путь к файлу со шрифтом */
+   }
+  </style>
+
+</head>
+
+<body>
+
+  <!-- Navigation -->
+  <nav class="navbar navbar-expand-lg navbar-dark navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand" href="{% url 'index' %}">Дамоў</a>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarResponsive">
+        <ul class="navbar-nav ml-auto">
+          <li class="nav-item">
+            <a class="nav-link mr-3" href="#">Зарэгістравацца</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="{% url 'login' %}">Увайсці</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+ {% block content %}
+ {% endblock content %}
+
+  <!-- Footer -->
+  <footer class="py-5 bg-black">
+    <div class="container">
+      <p class="m-0 text-center text-white small">Copyright &copy; Your Website 2019</p>
+    </div>
+    <!-- /.container -->
+  </footer>
+
+  <!-- Bootstrap core JavaScript -->
+  <script src="{% static 'login/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'login/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
+
+</body>
+
+</html>

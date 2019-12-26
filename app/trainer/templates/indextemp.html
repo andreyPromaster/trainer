@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="be">
 
 <head>
 
@@ -8,22 +8,24 @@
   <meta name="description" content="">
   <meta name="author" content="">
 
-  <title>Беларускамоўны трэнажор</title>
+  <title>{% block title %}Беларускамоўны трэнажор{% endblock %}</title>
+
 {% load static %} 
+<link rel="icon" href="{% static 'index/favicon/image.ico' %}" type="image/x-icon">
   <!-- Bootstrap core CSS -->
-  <link href="{% static 'vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
+  <link href="{% static 'index/vendor/bootstrap/css/bootstrap.min.css' %}" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Comfortaa&display=swap" rel="stylesheet"> 
   <!-- Custom fonts for this template -->
   <link href="https://fonts.googleapis.com/css?family=Catamaran:100,200,300,400,500,600,700,800,900" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato:100,100i,300,300i,400,400i,700,700i,900,900i" rel="stylesheet">
 
   <!-- Custom styles for this template -->
-  <link href=" {% static 'css/one-page-wonder.min.css' %}" rel="stylesheet">
+  <link href=" {% static 'index/css/one-page-wonder.min.css' %}" rel="stylesheet">
   <style>
    @font-face 
    {
     font-family: IstokWebB; /* Гарнитура шрифта */
-    src: url(/static/fonts/IstokWebB.ttf); /* Путь к файлу со шрифтом */
+    src: url(/static/index/fonts/IstokWebB.ttf); /* Путь к файлу со шрифтом */
    }
   </style>
 
@@ -41,10 +43,10 @@
       <div class="collapse navbar-collapse" id="navbarResponsive">
         <ul class="navbar-nav ml-auto">
           <li class="nav-item">
-            <a class="nav-link mr-3" href="#">Зарэгістравацца</a>
+            <a class="nav-link mr-3" href="{% url 'registrate' %}">Зарэгістравацца</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="#">Увайсці</a>
+            <a class="nav-link" href="{% url 'user login' %}">Увайсці</a>
           </li>
         </ul>
       </div>
@@ -127,8 +129,8 @@
   </footer>
 
   <!-- Bootstrap core JavaScript -->
-  <script src="/static/vendor/jquery/jquery.min.js"></script>
-  <script src="/static/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="{% static 'index/vendor/jquery/jquery.min.js' %}"></script>
+  <script src="{% static 'index/vendor/bootstrap/js/bootstrap.bundle.min.js' %}"></script>
 
 </body>
 
