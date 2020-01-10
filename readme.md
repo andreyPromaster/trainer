@@ -1,4 +1,4 @@
-#Service for learning the Belarusian language
+# Service for learning the Belarusian language
 This project helps people to learn Belarusian language
 ## Technology
 - Python 3.7
