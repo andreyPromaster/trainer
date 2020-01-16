@@ -15,4 +15,5 @@ def create_user_profile(sender, instance, created, **kwargs):
 @receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
-#Мы «зацепили» create_user_profile() и save_user_profile() к событию сохранения модели User. Такой сигнал называется post_save.
+#Мы «зацепили» create_user_profile() и save_user_profile() к событию сохранения модели User. сигнала post_save.
+#код из доков
