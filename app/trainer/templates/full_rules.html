@@ -1,0 +1,29 @@
+{% extends "tempdashboard.html" %}
+{% block title %} Правілы {% endblock title %}
+{% block content %}
+{% load static %}
+  <!-- Page Header -->
+  <header class="masthead" style="background-image: url({% static 'dashboard/img/rules.jpg' %}")>
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Правіла</h1>
+            <span class="subheading">{{ rule.title }}</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-12 col-md-5 mx-auto">
+        <div class="post-preview">
+            <div class="post-title">
+              {{ rule.content }} 
+            </div>
+          
+        {% endblock content %}
