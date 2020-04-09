@@ -4,13 +4,38 @@ from .forms import FindWordForm
 import pdb
 from .dictionary import Parcer
 from .models import Regulation
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import ListView
+from django.views.generic.base import TemplateView
 
 def index(request):
     return render(
         request,
         'index.html',
     )
-@login_required (login_url = '/account/login/')
+
+class BoardTemplateView(LoginRequiredMixin, TemplateView):
+    login_url = '/account/login/'
+    template_name = 'dashboard.html' 
+
+class RuleListView(LoginRequiredMixin, ListView):
+    login_url = '/account/login/'
+    template_name = 'list_rules.html' 
+    model = Regulation
+    context_object_name = 'rules'
+
+class SelectedRuleListView(LoginRequiredMixin, ListView):
+    login_url = '/account/login/'
+    template_name = 'full_rules.html' 
+    #context_object_name = 'rule'
+    model = Regulation
+
+    def get_context_data(self, *args, **kwargs) :
+        context = super() .get_context_data(*args, **kwargs)
+        context['current_rule'] = Regulation.objects.get(pk=self.kwargs['rules_id'])
+        return context
+
+#@login_required (login_url = '/account/login/')
 def dashboard(request):
     return render(
         request,
