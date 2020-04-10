@@ -23,7 +23,12 @@
 	<div class="limiter">
 		<div class="container-login100">
 			<div class="wrap-login100 p-t-50 p-b-90">
-				<form class="login100-form validate-form flex-sb flex-w" action="." method="post">    {% csrf_token %}
+				{% if next %}
+				<form class="login100-form validate-form flex-sb flex-w" action="/account/login/?next={{ next }}" method="post">
+				{% else %}
+				<form class="login100-form validate-form flex-sb flex-w" action="/account/login/" method="post">  
+				{% endif %}	 
+					{% csrf_token %}
 					<span class="login100-form-title p-b-51">
 						Login
 					</span>

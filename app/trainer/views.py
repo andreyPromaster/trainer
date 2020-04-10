@@ -22,12 +22,11 @@ class RuleListView(LoginRequiredMixin, ListView):
     login_url = '/account/login/'
     template_name = 'list_rules.html' 
     model = Regulation
-    context_object_name = 'rules'
+    context_object_name = 'rules' 
 
 class SelectedRuleListView(LoginRequiredMixin, ListView):
     login_url = '/account/login/'
     template_name = 'full_rules.html' 
-    #context_object_name = 'rule'
     model = Regulation
 
     def get_context_data(self, *args, **kwargs) :
@@ -35,15 +34,9 @@ class SelectedRuleListView(LoginRequiredMixin, ListView):
         context['current_rule'] = Regulation.objects.get(pk=self.kwargs['rules_id'])
         return context
 
-#@login_required (login_url = '/account/login/')
-def dashboard(request):
-    return render(
-        request,
-        'dashboard.html',
-    )
+@login_required (login_url = '/account/login/')
 def dictionary(request):
     search_word = ''
-    #pdb.set_trace()
     if request.method == 'POST':
         form= FindWordForm(request.POST)        
         if form.is_valid():
@@ -56,13 +49,20 @@ def dictionary(request):
     context= {'form': form, 'word': search_word}
     return render(request, 'dictionary.html', context)
 
-def by_rule(request):
-    rules = Regulation.objects.all()
-    content = {'rules':rules}
-    return render(request, 'list_rules.html', content)
+# #@login_required (login_url = '/account/login/')
+# def dashboard(request):
+#     return render(
+#         request,
+#         'dashboard.html',
+#     )
 
-def text_rules(request,rules_id):
-    current_rule = Regulation.objects.get(pk=rules_id)
-    content={'rule':current_rule }
-    return render(request,'full_rules.html', content)
+# def by_rule(request):
+#     rules = Regulation.objects.all()
+#     content = {'rules':rules}
+#     return render(request, 'list_rules.html', content)
+
+# def text_rules(request,rules_id):
+#     current_rule = Regulation.objects.get(pk=rules_id)
+#     content={'rule':current_rule }
+#     return render(request,'full_rules.html', content)
 

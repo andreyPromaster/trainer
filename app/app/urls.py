@@ -21,13 +21,14 @@ urlpatterns = [
 ]
 
 from django.urls import include
+from django.contrib.auth import views as auth_view
 urlpatterns += [
      path('trainer/', include('trainer.urls')),
      path('account/', include('account.urls')),
-     path('', include("django.contrib.auth.urls")),
+     #path('login/', auth_view.LoginView.as_view()),
 ]
 #urlpatterns += [
-    # path('dashboard/', include('trainer.urls')),
+    # path('dashboard/', include('trainer.urls')), include("django.contrib.auth.urls")
 #]
 
 #from django.views.generic import RedirectView

@@ -57,7 +57,7 @@ ROOT_URLCONF = 'app.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [],
+        'DIRS': [os.path.join(BASE_DIR, 'templates')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -125,5 +125,6 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 CRISPY_TEMPLATE_PACK = "bootstrap4"
-#LOGIN_REDIRECT_URL ="/trainer/dashboard/"
+LOGIN_URL ="/account/login/"
+LOGIN_REDIRECT_URL = "/trainer/dashboard"
 #LOGOUT_REDIRECT_URL ="/account/login/"
