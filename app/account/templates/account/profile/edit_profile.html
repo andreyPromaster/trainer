@@ -1,0 +1,38 @@
+{% extends 'tempdashboard.html' %}
+
+{% block title %} Profile {% endblock %}
+{% load crispy_forms_tags %}
+{% block content %}
+{% load static %}
+
+<header class="masthead" style="background-image: url({% static 'dashboard/img/rules.jpg' %}")>
+    <div class="overlay"></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-8 col-md-10 mx-auto">
+          <div class="site-heading">
+            <h1>Профіль</h1>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+<div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="post-preview">
+                <form method="post" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <table>
+                    {{ form|crispy }}
+                    {{ profile_form|crispy }}
+                    </table>
+                    <button type="submit">Змяніць</button>
+                </form>
+            </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+{% endblock %}
