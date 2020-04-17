@@ -7,7 +7,7 @@
 body {
   font-size: 20px;
   color: #212529;
-  font-family: 'Lora', 'Times New Roman', serif;
+  font-family: 'Lora', 'Open Sans', serif;
 }
 
 p {
@@ -265,6 +265,21 @@ header.masthead .post-heading .meta a {
   header.masthead .post-heading .subheading {
     font-size: 30px;
   }
+}
+/*скопировал код*/
+.content-section {
+  background: #ffffff;
+  padding: 10px 20px;
+  border: 1px solid #dddddd;
+  border-radius: 3px;
+  margin-bottom: 20px;
+}
+
+.account-img {
+  height: 125px;
+  width: 125px;
+  margin-right: 20px;
+  margin-bottom: 16px;
 }
 
 .post-preview > a {

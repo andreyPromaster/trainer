@@ -18,16 +18,31 @@
     </div>
   </header>
 <div class="container">
+
+<div class="col-lg-8 col-md-10 mx-auto">
+  <div class="media">
+      <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+      <div class="media-body">
+        <h2 class="account-heading">{{ user.username }}</h2>
+        <p class="text-secondary">{{ user.email }}</p>
+      </div>
+  </div>
+</div>
+    
+<div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
         <div class="post-preview">
                 <form method="post" enctype="multipart/form-data">
                     {% csrf_token %}
-                    <table>
-                    {{ form|crispy }}
-                    {{ profile_form|crispy }}
-                    </table>
+                    <fieldset class="form-group">
+                      <legend class="border-bottom mb-4">Звесткі аб вас</legend>
+                      {{ form|crispy }}
+                      {{ profile_form|crispy }}
+                  </fieldset>
+                  <div class="form-group">
                     <button type="submit">Змяніць</button>
+                  </div>
                 </form>
             </div>
         </div>

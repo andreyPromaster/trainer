@@ -18,15 +18,15 @@ class Profile(models.Model):
     width_field = models.IntegerField(default=0)
     birth_date = models.DateField(null=True, blank=True)
 
-    def save(self):
-        super().save()
+    # def save(self, *args, **kwargs):
+    #     super(Profile, self).save(*args, **kwargs)
 
-        img = Image.open(self.image.path)
-        if img.height > 400 or img.width > 400:
-            output_size = (400, 400)
-            img.thumbnail(output_size)
-            img.save(self.image.path)
-             
+    #     img = Image.open(self.image.path)
+    #     if img.height > 400 or img.width > 400:
+    #         output_size = (400, 400)
+    #         img.thumbnail(output_size)
+    #         img.save(self.image.path)
+
 @receiver(post_save, sender=User)
 def create_user_profile(sender, instance, created, **kwargs):
     if created:
