@@ -2,9 +2,10 @@ from django.http import HttpResponse
 from django.shortcuts import render,redirect
 from django.contrib.auth import authenticate, login,logout
 from .forms import LoginForm
-from .forms import RegisterForms, EditProfileForm, ProfileForm
+from .forms import RegisterForms, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
+from django.contrib import messages
 
 def logout_view(request):
     logout(request)
@@ -47,19 +48,22 @@ def register(request):
 @login_required
 def edit_profile(request):
     if request.method == 'POST':
-        form = EditProfileForm(request.POST, instance=request.user)
-        profile_form = ProfileForm(request.POST, request.FILES, instance=request.user.profile)  # request.FILES is show the selected image or file
+        form = UserUpdateForm(request.POST, instance=request.user)
+        profile_form = ProfileUpdateForm(request.POST, 
+                                        request.FILES, 
+                                        instance=request.user.profile)  # request.FILES is show the selected image or file
 
         if form.is_valid() and profile_form.is_valid():
-            user_form = form.save()
-            custom_form = profile_form.save(False)# then it will return an object that hasn’t yet been saved to the database.
-            custom_form.user = user_form
-            custom_form.save()
-            #return redirect('accounts:view_profile')
-            return HttpResponse('ok')
+            form.save()
+            profile_form.save(False)#  it will return an object that hasn’t yet been saved to the database.
+            messages.success(request, f'Ваш акаўнт зменены')
+            #custom_form.user = user_form
+            #custom_form.save()
+            return redirect('/account/edit_profile/')
+            #return HttpResponse('ok')
     else:
-        form = EditProfileForm(instance=request.user)
-        profile_form = ProfileForm(instance=request.user.profile)
+        form = UserUpdateForm(instance=request.user)
+        profile_form = ProfileUpdateForm(instance=request.user.profile)
         args = {}
         args['form'] = form
         args['profile_form'] = profile_form

@@ -15,13 +15,13 @@ class RegisterForms (UserCreationForm):
 		model = User
 		fields = ["username", "email", "password1","password2"]
 
-class EditProfileForm(ModelForm):
+class UserUpdateForm(ModelForm):
     class Meta:
         model = User
 		#email = forms.CharField(widget=forms.TextInput(attrs={'placeholder': 'Email'}))
-        fields = ['email']
+        fields = ["username",'email']
 
-class ProfileForm(ModelForm):
+class ProfileUpdateForm(ModelForm):
 	class Meta:
 		model = Profile
 		fields = ['image', 'birth_date']
