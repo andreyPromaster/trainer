@@ -26,6 +26,7 @@ urlpatterns += [
      path('trainer/', include('trainer.urls')),
      path('account/', include('account.urls')),
      #path('login/', auth_view.LoginView.as_view()),
+     path('summernote/', include('django_summernote.urls')),
 ]
 #urlpatterns += [
     # path('dashboard/', include('trainer.urls')), include("django.contrib.auth.urls")

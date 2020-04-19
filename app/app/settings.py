@@ -40,6 +40,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'trainer.apps.TrainerConfig',
     'account',
+    'django_summernote', 
 ]
 
 MIDDLEWARE = [
