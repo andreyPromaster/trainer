@@ -6,6 +6,8 @@ from .forms import RegisterForms, UserUpdateForm, ProfileUpdateForm
 from django.contrib.auth.decorators import login_required
 from datetime import datetime
 from django.contrib import messages
+from math import floor
+
 
 def logout_view(request):
     logout(request)
@@ -37,8 +39,9 @@ def register(request):
 
         form = RegisterForms(request.POST)
         if form.is_valid():
-           form.save()
-        return redirect("/account/login")   
+            form.save()
+            messages.success(request, f'Акаўнт створаны ')
+            return redirect("/account/login")   
     else:
         form = RegisterForms()
 
@@ -67,6 +70,38 @@ def edit_profile(request):
         args = {}
         args['form'] = form
         args['profile_form'] = profile_form
+        exp = ExperienceUser()  
+        args['level'] = exp.getlevel(request.user.profile.experience) 
+        args['rank'] = exp.getRank(args['level'])
         return render(request, 'account/profile/edit_profile.html', args)
 
+class ExperienceUser:
+
+    def getlevel(self, exp):
+        return floor(pow(exp / 100, 7/10)) 
+
+    def getExperience(self, level):
+        return round (pow(level, 10/7) * 100)
+
+    def getRank(self, level):
+        rank = ""
+        if level < 5:
+            rank = "Навічок"
+        elif level < 15:
+            rank = "Карыстальнік"
+        elif level < 30:
+            rank = "Актыўны"
+        elif level < 45:
+            rank = "Гігант думак"
+        elif level < 60:
+            rank = "Старэйшына"
+        elif level < 75:
+            rank = "Мовазнаўца"
+        elif level < 100:
+            rank = "Ветэран"
+        elif level < 125:
+            rank = "Генерал"
+        else:
+            rank = "Францыск Скарына"
+        return rank
 

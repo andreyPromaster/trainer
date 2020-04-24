@@ -2,21 +2,25 @@
 
 {% block title %} Profile {% endblock %}
 {% load crispy_forms_tags %}
-{% block content %}
 {% load static %}
 
+{% block background_image %}
 <header class="masthead" style="background-image: url({% static 'dashboard/img/rules.jpg' %}")>
-    <div class="overlay"></div>
-    <div class="container">
-      <div class="row">
-        <div class="col-lg-8 col-md-10 mx-auto">
-          <div class="site-heading">
-            <h1>Профіль</h1>
-          </div>
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="site-heading">
+          <h1>Профіль</h1>
         </div>
       </div>
     </div>
-  </header>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+
 <div class="container">
 
 <div class="col-lg-8 col-md-10 mx-auto">
@@ -24,11 +28,12 @@
       <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
       <div class="media-body">
         <h2 class="account-heading">{{ user.username }}</h2>
-        <p class="text-secondary">{{ user.email }}</p>
+        <div class="text-secondary">{{ user.email }}</div>
+        <div class="text-secondary">Вы - {{ rank }}, узровень - {{ level }}</div>
       </div>
   </div>
 </div>
-    
+</div>
 <div class="container">
     <div class="row">
       <div class="col-lg-8 col-md-10 mx-auto">
@@ -48,6 +53,5 @@
         </div>
       </div>
     </div>
-</div>
 
 {% endblock %}
