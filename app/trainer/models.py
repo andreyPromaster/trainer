@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class Regulation(models.Model):
 	title = models.CharField(max_length=50,verbose_name='Назва правіла')
@@ -11,10 +12,12 @@ class Regulation(models.Model):
 		verbose_name_plural='Правілы'
 		verbose_name='Правіла'
 
-class ExplanationOfTask(models.Model):
-    rule = models.ForeignKey(Regulation, on_delete=models.PROTECT,verbose_name='Правіла')
-    explanation = models.CharField(max_length=250,verbose_name='Агульнае заданне', blank=True)
 
+class Quiz(models.Model):
+    rule = models.ForeignKey(Regulation, on_delete=models.PROTECT,verbose_name='Правіла')
+    explanation = models.TextField(blank=True, verbose_name='Агульнае заданне')
+    name = models.CharField(max_length=255)
+    
     def __str__(self):
     	return self.explanation
 
@@ -22,9 +25,10 @@ class ExplanationOfTask(models.Model):
         verbose_name='Заданне для практыкавання'
 
 class Task(models.Model):
-    explanation = models.ForeignKey(ExplanationOfTask, on_delete=models.PROTECT,verbose_name='Агульнае заданне')
+    quiz = models.ForeignKey(Quiz, on_delete=models.PROTECT, verbose_name='Пытанне да задання',
+                             related_name='questions')
     question = models.TextField(verbose_name='Тэкст заданія', blank=True)
-    answer = models.TextField(verbose_name='Адказ', blank=True)
+
 
     def __str__(self):
     	return self.question
@@ -32,3 +36,44 @@ class Task(models.Model):
     class Meta:
         verbose_name_plural='Заданні'
         verbose_name='Заданне'
+
+
+class Answer(models.Model):
+    question = models.ForeignKey(Task, on_delete=models.CASCADE, related_name='answers')
+    text = models.CharField('Адказ', max_length=255)
+    is_correct = models.BooleanField('Правільны адказ', default=False)
+
+    def __str__(self):
+        return self.text
+
+
+
+
+class Student(models.Model):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, primary_key=True)
+    quizzes = models.ManyToManyField(Quiz, through='TakenQuiz')
+    # through Kласс модели, которая представляет связующую таблицу (связующая модель) 
+    # либо в виде ссьmки на него, либо в виде имени, представленном стро­кой.
+
+    def get_unanswered_questions(self, quiz):
+        answered_questions = self.quiz_answers \
+            .filter(answer__question__quiz=quiz) \
+            .values_list('answer__question__pk', flat=True) # получаем объекты через таблицу studentAnswer по ключу answer, 
+                                                            # далее из таббл Answer по ключу question получаем сам вопрос
+        questions = quiz.questions.exclude(pk__in=answered_questions).order_by('question')
+        return questions
+
+    def __str__(self):
+        return self.user.username
+
+
+class TakenQuiz(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='taken_quizzes')
+    quiz = models.ForeignKey(Quiz, on_delete=models.CASCADE, related_name='taken_quizzes')
+    score = models.FloatField()
+    date = models.DateTimeField(auto_now_add=True)
+
+
+class StudentAnswer(models.Model):
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='quiz_answers')
+    answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='+')

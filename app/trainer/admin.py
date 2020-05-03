@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django_summernote.admin import SummernoteModelAdmin
-from .models import Regulation,ExplanationOfTask,Task
+from .models import Regulation, Quiz, Task, Answer, TakenQuiz, StudentAnswer, Student
 
 class RegulationAdmin(SummernoteModelAdmin):
     summernote_fields = ('content',)
@@ -8,14 +8,37 @@ class RegulationAdmin(SummernoteModelAdmin):
     list_display_links = ['title']
     search_fields = ['title']
 
-class ExplanationOfTaskAdmin(SummernoteModelAdmin):
-    list_display = ['explanation', 'rule']
+class QuizAdmin(SummernoteModelAdmin):
+    summernote_fields = ('explanation',)
+    list_display = ['explanation', 'rule', 'name' ]
     list_display_links = ['explanation']
 
 class TaskAdmin(SummernoteModelAdmin):
-    list_display = ['question', 'answer','explanation']
-    list_display_links = ['question', 'answer']
+    summernote_fields = ('question',)
+    list_display = ['question','quiz']
+    list_display_links = ['question', 'quiz']
+
+class AnswerAdmin(admin.ModelAdmin):
+    list_display = ['question','text', 'is_correct']
+    list_display_links = ['question']
+
+class StudentAdmin(admin.ModelAdmin):
+    list_display = ['user']
+    list_display_links = ['user']
+
+class TakenQuiztAdmin(admin.ModelAdmin):
+    list_display = ['student','quiz', 'score','date']
+    list_display_links = ['student','quiz']
+
+class StudentAnswerAdmin(admin.ModelAdmin):
+    list_display = ['student','answer']
+    list_display_links = ['student','answer']
+
 
 admin.site.register(Regulation, RegulationAdmin)
-admin.site.register(ExplanationOfTask,ExplanationOfTaskAdmin)
+admin.site.register(Quiz,QuizAdmin)
 admin.site.register(Task,TaskAdmin)
+admin.site.register(Answer, AnswerAdmin)
+admin.site.register(Student, StudentAdmin)
+admin.site.register(TakenQuiz, TakenQuiztAdmin)
+admin.site.register(StudentAnswer, StudentAnswerAdmin)

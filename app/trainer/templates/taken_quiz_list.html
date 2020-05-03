@@ -1,0 +1,51 @@
+{% extends 'tempdashboard.html' %}
+{% load static %}
+
+
+{% block background_image %}
+<header class="masthead" style="background-image: url({% static 'dashboard/img/rules.jpg' %}")>
+  <div class="overlay"></div>
+  <div class="container">
+    <div class="row">
+      <div class="col-lg-8 col-md-10 mx-auto">
+        <div class="site-heading">
+          <h1>Правіла</h1>
+          <span class="subheading">Усё, што пратрэбна табе</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+{% endblock %}
+
+{% block content %}
+<div class="container my-4">
+    <div class="row justify-content-center">
+      <div class="col-md-10 col-sm-12">
+  <div class="card">
+    <table class="table mb-0">
+      {% include '_header.html' with active='taken' %}
+      <thead>
+        <tr>
+          <th>Тэст</th>
+          <th>Вынікі</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for taken_quiz in taken_quizzes %}
+          <tr>
+            <td>{{ taken_quiz.quiz.name }}</td>
+            <td>{{ taken_quiz.score }}</td>
+          </tr>
+        {% empty %}
+          <tr>
+            <td class="bg-light text-center font-italic" colspan="3">Вы яшчэ не зрабілі ніводнага тэста</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+      </div>
+    </div>
+</div>
+{% endblock %}

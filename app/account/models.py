@@ -3,6 +3,7 @@ from django.contrib.auth.models import User
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 from PIL import Image
+from trainer.models import Student, TakenQuiz
 
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
@@ -33,7 +34,18 @@ def create_user_profile(sender, instance, created, **kwargs):
         Profile.objects.create(user=instance)
 
 @receiver(post_save, sender=User)
+def create_user_student(sender, instance, created, **kwargs):
+    if created:
+        Student.objects.create(user=instance)
+
+
+@receiver(post_save, sender=User)
 def save_user_profile(sender, instance, **kwargs):
     instance.profile.save()
 #Мы «зацепили» create_user_profile() и save_user_profile() к событию сохранения модели User.
 #сигнала post_save.
+@receiver(post_save, sender = TakenQuiz)
+def add_score(instance, **kwargs):
+    profile = instance.student.user.profile
+    profile.experience += 10
+    profile.save()

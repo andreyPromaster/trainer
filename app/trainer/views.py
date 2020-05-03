@@ -1,12 +1,16 @@
-from django.shortcuts import render
+from django.shortcuts import render,get_object_or_404,redirect
 from django.contrib.auth.decorators import login_required
-from .forms import FindWordForm
+from .forms import FindWordForm, TakeQuizForm
 import pdb
 from .dictionary import Parcer
 from .models import Regulation
+from django.db import transaction
+from django.db.models import Count
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import ListView
 from django.views.generic.base import TemplateView
+from .models import Quiz, Student, TakenQuiz
+from django.contrib import messages
 
 def index(request):
     return render(
@@ -49,20 +53,68 @@ def dictionary(request):
     context= {'form': form, 'word': search_word}
     return render(request, 'dictionary.html', context)
 
-# #@login_required (login_url = '/account/login/')
-# def dashboard(request):
-#     return render(
-#         request,
-#         'dashboard.html',
-#     )
 
-# def by_rule(request):
-#     rules = Regulation.objects.all()
-#     content = {'rules':rules}
-#     return render(request, 'list_rules.html', content)
+class QuizListView(LoginRequiredMixin, ListView):
+    model = Quiz
+    ordering = ('name', )
+    context_object_name = 'quizzes'
+    template_name = 'quiz_list.html'
 
-# def text_rules(request,rules_id):
-#     current_rule = Regulation.objects.get(pk=rules_id)
-#     content={'rule':current_rule }
-#     return render(request,'full_rules.html', content)
+    def get_queryset(self):
+        student = self.request.user.student   #“Аннотирует” каждый объект в QuerySet агрегированным значением (среднее, суииа и др.), которое будет вычислено из данных связанных объектов, которые связанны с объектами из``QuerySet``. 
+        taken_quizzes = student.quizzes.values_list('pk', flat=True)  # Возвращает новый QuerySet содержащий объекты не отвечающие параметрам фильтрации.
+        queryset = Quiz.objects.exclude(pk__in=taken_quizzes).annotate(questions_count=Count('questions')).filter(questions_count__gt=0)
+        return queryset
 
+
+class TakenQuizListView(LoginRequiredMixin, ListView):
+    model = TakenQuiz
+    context_object_name = 'taken_quizzes'
+    template_name = 'taken_quiz_list.html'
+
+    def get_queryset(self): #Возвращает QuerySet который автоматически включает в выборку данные связанных объектов при выполнении запроса.
+        queryset = self.request.user.student.taken_quizzes.select_related('quiz').order_by('quiz__name')
+        return queryset
+
+
+@login_required
+def take_quiz(request, pk):
+    quiz = get_object_or_404(Quiz, pk=pk)
+    student = request.user.student
+
+    if student.quizzes.filter(pk=pk).exists():
+        return render(request, 'taken_quiz_list.html')
+
+    total_questions = quiz.questions.count()
+    unanswered_questions = student.get_unanswered_questions(quiz)
+    total_unanswered_questions = unanswered_questions.count()
+    progress = 100 - round(((total_unanswered_questions - 1) / total_questions) * 100)
+    question = unanswered_questions.first()
+
+    if request.method == 'POST':
+        form = TakeQuizForm(question=question, data=request.POST)
+        if form.is_valid():
+            with transaction.atomic():
+                student_answer = form.save(commit=False)
+                student_answer.student = student
+                student_answer.save()
+                if student.get_unanswered_questions(quiz).exists():
+                    return redirect('take_quiz', pk)
+                else:
+                    correct_answers = student.quiz_answers.filter(answer__question__quiz=quiz, answer__is_correct=True).count()
+                    score = round((correct_answers / total_questions) * 100.0, 2)
+                    TakenQuiz.objects.create(student=student, quiz=quiz, score=score)
+                    if score < 50.0:
+                        messages.warning(request, 'У наступным разе будзе лепей %s лік %s.' % (quiz.name, score))
+                    else:
+                        messages.success(request, 'Мае віншаванні, %s! Твой лік %s.' % (quiz.name, score))
+                    return redirect('quiz_list')
+    else:
+        form = TakeQuizForm(question=question)
+
+    return render(request, 'take_quiz_form.html', {
+        'quiz': quiz,
+        'question': question,
+        'form': form,
+        'progress': progress
+    })
