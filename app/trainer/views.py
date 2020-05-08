@@ -12,6 +12,9 @@ from django.views.generic.base import TemplateView
 from .models import Quiz, Student, TakenQuiz
 from django.contrib import messages
 
+ 
+ 
+
 def index(request):
     return render(
         request,
@@ -35,7 +38,7 @@ class SelectedRuleListView(LoginRequiredMixin, ListView):
 
     def get_context_data(self, *args, **kwargs) :
         context = super() .get_context_data(*args, **kwargs)
-        context['current_rule'] = Regulation.objects.get(pk=self.kwargs['rules_id'])
+        context['current_rule'] = get_object_or_404(Regulation, pk=self.kwargs['rules_id'])
         return context
 
 @login_required (login_url = '/account/login/')
@@ -89,9 +92,16 @@ def take_quiz(request, pk):
     unanswered_questions = student.get_unanswered_questions(quiz)
     total_unanswered_questions = unanswered_questions.count()
     progress = 100 - round(((total_unanswered_questions - 1) / total_questions) * 100)
-    question = unanswered_questions.first()
+
 
     if request.method == 'POST':
+        question = []
+        if request.POST.get('answer') is None:
+            question = unanswered_questions.first()
+        else:
+            for i in unanswered_questions.filter(answers__pk=request.POST['answer']):
+                question = i
+                  
         form = TakeQuizForm(question=question, data=request.POST)
         if form.is_valid():
             with transaction.atomic():
@@ -110,6 +120,8 @@ def take_quiz(request, pk):
                         messages.success(request, 'Мае віншаванні, %s! Твой лік %s.' % (quiz.name, score))
                     return redirect('quiz_list')
     else:
+        unanswered_questions = unanswered_questions.order_by('?')    
+        question = unanswered_questions.first()
         form = TakeQuizForm(question=question)
 
     return render(request, 'take_quiz_form.html', {

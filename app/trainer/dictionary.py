@@ -2,11 +2,13 @@ import requests
 from bs4 import BeautifulSoup
 
 class Parcer():
+    
     def getPageWitfoundedWord(self, word):
         payload = {'term': word, 'lang': 'beld'}
         r = requests.get('https://www.skarnik.by/search', params = payload)
         soup = BeautifulSoup(r.text, "lxml")
         return soup
+
     def getExplanationOfWord(self, soup):
         data=[]
         try:

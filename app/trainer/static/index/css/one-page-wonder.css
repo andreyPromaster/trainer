@@ -136,6 +136,11 @@ header.masthead .bg-circle-4 {
   border-color: #ee0979;
 }
 
+.btn-confirm {
+  background-color: #9999FF;
+  border-color: #9999FF;
+}
+
 .btn-primary:active, .btn-primary:focus, .btn-primary:hover {
   background-color: #bd0760 !important;
   border-color: #bd0760 !important;

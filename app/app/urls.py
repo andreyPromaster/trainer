@@ -25,17 +25,9 @@ from django.contrib.auth import views as auth_view
 urlpatterns += [
      path('trainer/', include('trainer.urls')),
      path('account/', include('account.urls')),
-     #path('login/', auth_view.LoginView.as_view()),
      path('summernote/', include('django_summernote.urls')),
 ]
-#urlpatterns += [
-    # path('dashboard/', include('trainer.urls')), include("django.contrib.auth.urls")
-#]
 
-#from django.views.generic import RedirectView
-#urlpatterns += [
-#    path('', RedirectView.as_view(url='/trainer/', permanent=True)),
-#]
 from django.conf import settings
 from django.conf.urls.static import static
 
