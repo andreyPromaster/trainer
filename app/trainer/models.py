@@ -57,11 +57,14 @@ class Student(models.Model):
 
     def get_unanswered_questions(self, quiz):
         answered_questions = self.quiz_answers \
-            .filter(answer__question__quiz=quiz) \
+            .filter(answer__question__quiz=quiz, taken_quiz=None) \
             .values_list('answer__question__pk', flat=True) # получаем объекты через таблицу studentAnswer по ключу answer, 
-                                                            # далее из таббл Answer по ключу question получаем сам вопрос
+                                                            # далее из таббл Answer по ключу question получаем сам запрос
+                                                            # массив из ключей отвеченных вопросов
         questions = quiz.questions.exclude(pk__in=answered_questions).order_by('question')
         return questions
+
+    
 
     def __str__(self):
         return self.user.username
@@ -77,3 +80,6 @@ class TakenQuiz(models.Model):
 class StudentAnswer(models.Model):
     student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name='quiz_answers')
     answer = models.ForeignKey(Answer, on_delete=models.CASCADE, related_name='+')
+    taken_quiz = models.ForeignKey(TakenQuiz, on_delete=models.CASCADE, 
+                                   related_name='taken_quiz_answers', 
+                                   null=True)

@@ -28,11 +28,11 @@ class StudentAdmin(admin.ModelAdmin):
 
 class TakenQuiztAdmin(admin.ModelAdmin):
     list_display = ['student','quiz', 'score','date']
-    list_display_links = ['student','quiz']
+    list_display_links = ['student','quiz','date']
 
 class StudentAnswerAdmin(admin.ModelAdmin):
-    list_display = ['student','answer']
-    list_display_links = ['student','answer']
+    list_display = ['student','answer','taken_quiz']
+    list_display_links = ['student','answer','taken_quiz']
 
 
 admin.site.register(Regulation, RegulationAdmin)

@@ -22,4 +22,4 @@ class TakeQuizForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         question = kwargs.pop('question')
         super().__init__(*args, **kwargs)
-        self.fields['answer'].queryset = question.answers.order_by('?')#????????????
+        self.fields['answer'].queryset = question.answers.order_by('?')

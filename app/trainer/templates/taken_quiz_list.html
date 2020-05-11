@@ -28,6 +28,7 @@
       <thead>
         <tr>
           <th>Тэст</th>
+          <th>Час выканання</th>
           <th>Вынікі</th>
         </tr>
       </thead>
@@ -35,6 +36,7 @@
         {% for taken_quiz in taken_quizzes %}
           <tr>
             <td>{{ taken_quiz.quiz.name }}</td>
+            <td>{{ taken_quiz.date }}</td>
             <td>{{ taken_quiz.score }}</td>
           </tr>
         {% empty %}

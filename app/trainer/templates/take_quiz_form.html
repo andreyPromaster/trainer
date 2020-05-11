@@ -32,6 +32,7 @@ location.href = "#start-test";
     <div class="progress-bar" role="progressbar" aria-valuenow="{{ progress }}" aria-valuemin="0" aria-valuemax="100" style="width: {{ progress }}%"></div>
   </div>
   <h2 class="mb-3" id ="start-test">{{ quiz.name }}</h2>
+  <h2 class="mb-3" id ="explanation">{{ quiz.explanation|safe  }}</h2>
   <a href="{% url 'full_rules' quiz.rule.pk %}" class="lead">Больш звестак для падрыхтоўкі тут</a>
   <p class="lead">{{ question.question|safe  }}</p>
   <form method="post" novalidate>
