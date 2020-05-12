@@ -1,0 +1,5 @@
+Django==2.2.6
+lxml
+beautifulsoup4
+django-crispy-forms
+mysqlclient
