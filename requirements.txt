@@ -3,3 +3,4 @@ lxml
 beautifulsoup4
 django-crispy-forms
 mysqlclient
+django-summernote
